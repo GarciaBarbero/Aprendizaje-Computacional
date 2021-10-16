@@ -26,7 +26,7 @@ public class Tablas {
   private List<String> Name = new ArrayList<String> ();
   private Map<String, List<String>> ValuesOfTags = new HashMap<String, List<String>>();
 
-//  //  Para el backtracking
+//  TODO backtracking
 //  private Tablas PARENT = null;
 //  private Tablas CHILDREN = null;
 
@@ -36,14 +36,14 @@ public class Tablas {
 //    this.nombre = new ArrayList<String>(nombre);
 //    this.ValuesOfTags = new HashMap<String, List<String>>(valuesOfTags);
 //  }
-
-  public Tablas(Tablas parent){
-    this.Tabla =  parent.getTabla();
-    this.Tags = parent.getTags();
-    this.Name = parent.getName();
-    this.ValuesOfTags = parent.getValuesOfTags();
+//
+//  public Tablas(Tablas parent){
+//    this.Tabla =  parent.getTabla();
+//    this.Tags = parent.getTags();
+//    this.Name = parent.getName();
+//    this.ValuesOfTags = parent.getValuesOfTags();
 //    this.PARENT = parent;
-  }
+//  }
 
   public Tablas(String Tags) {
     this.Tags = split(Tags);
@@ -76,7 +76,7 @@ public class Tablas {
     return this.Tabla.stream().filter(s -> (s.get(column1).equals(tag_value1))&&(s.get(column2).equals(tag_value2))).count();
   }
 
-  //    Todo Alomejor puede ser mas eficiente.
+  //    Todo: Alomejor puede ser más eficiente.
   public void removeColumnTag(String tag) throws Exception {
     int column = this.getIndexTag(tag);
     this.Tags.remove(column+1);
@@ -95,7 +95,7 @@ public class Tablas {
 
   private int getIndexTag(String tag) throws Exception {
     int column = this.Tags.indexOf(tag)-1;
-    if (column < 0) throw new Exception("No exist la tag: " + tag);
+    if (column < 0) throw new Exception("No existe la tag: " + tag);
     return column;
   }
 
@@ -108,14 +108,14 @@ public class Tablas {
     }
   }
 
-/**
- * <p> Seleciona las filas que contiene la el valor con la etiqueta asignada </p>
- * @return <p>  <p> Pair< List < Integer >, List < List < String > > > </p>
- *              <p> Key: posicion del nombre en la lista de nombres </p>
- *              <p> Value: Valora de la fila en la tabla </p>
- *         </p>
- * */
-// TODO Alomejor no es todo lo eficionete que deveria
+  /**
+   * <p> Selecciona las filas que contiene la el valor con la etiqueta asignada </p>
+   * @return <p>  <p> Pair< List < Integer >, List < List < String > > > </p>
+   *              <p> Key: posición del nombre en la lista de nombres </p>
+   *              <p> Value: Valora de la fila en la tabla </p>
+   *         </p>
+   * */
+// TODO Alomejor no es todo lo eficiente que debería
   private Pair<List<String>, List<List<String>>> filterRowsValue(String tag, String tag_value) throws Exception {
     int column = this.Tags.indexOf(tag)-1;
     if (column < 0) throw new Exception("No exist la tag: " + tag);
