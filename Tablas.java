@@ -1,30 +1,34 @@
-package com.company;
-
-import javafx.util.Pair;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
 /*
 ╔════════════════════════════════════════════════════════════════════╗
-║							Tabla  									 ║
+║							Tabla  									                               ║
 ╠════════╦═══════════╦═══════════╦═══════════╦══════════╦════════════╣
-║ Nobres ║ Etiqueta1 ║ Etiqueta2 ║ Etiqueta3 ║ 	...		║ Etiqueta n ║
+║ Nobres ║ Etiqueta1 ║ Etiqueta2 ║ Etiqueta3 ║ 	...		  ║ Etiqueta n ║
 ╠════════╬═══════════╬═══════════╬═══════════╬══════════╬════════════╣
-║ Nobre1 │ Eti.Value │ Eti.Value │ Eti.Value │	...		│ Eti.Value	 ║
+║ Nobre1 │ Eti.Value │ Eti.Value │ Eti.Value │	...		  │ Eti.Value	 ║
 ╠────────┼───────────┼───────────┼───────────┼──────────┼────────────╣
-║ Nobre2 │ Eti.Value │ Eti.Value │ Eti.Value │	...		│ Eti.Value	 ║
+║ Nobre2 │ Eti.Value │ Eti.Value │ Eti.Value │	...		  │ Eti.Value	 ║
 ╠────────┼───────────┼───────────┼───────────┼──────────┼────────────╣
-║ Nobre3 │ Eti.Value │ Eti.Value │ Eti.Value │	...		│ Eti.Value	 ║
+║ Nobre3 │ Eti.Value │ Eti.Value │ Eti.Value │	...		  │ Eti.Value	 ║
 ╠────────┼───────────┼───────────┼───────────┼──────────┼────────────╣
-║ Nobre4 │ Eti.Value │ Eti.Value │ Eti.Value │	...		│ Eti.Value	 ║
+║ Nobre4 │ Eti.Value │ Eti.Value │ Eti.Value │	...		  │ Eti.Value	 ║
 ╚════════╩═══════════╩═══════════╩═══════════╩══════════╩════════════╝
 */
 public class Tablas {
+  // Tabla de valores
   private List<List<String>> Tabla = new ArrayList<List<String>> ();
+  // Nombre de las columnas
   private List<String> Tags = new ArrayList<String> ();
+  // Nombre de las filas
   private List<String> Name = new ArrayList<String> ();
+  // valores de los tagas
   private Map<String, List<String>> ValuesOfTags = new HashMap<String, List<String>>();
+  // Simbolo de separacion
+  public String split_simbol = ";";
+  // Contador de elementos
+  private Integer num_element = 0;
 
 //  TODO backtracking
 //  private Tablas PARENT = null;
@@ -45,21 +49,41 @@ public class Tablas {
 //    this.PARENT = parent;
 //  }
 
-  public Tablas(String Tags) {
+
+  public Tablas(String Tags, String split_simbol) {
+    /**
+     * @param Tags: Indica nombre de cada columna
+     * @param split_simbol: Define el simbolo de sepacacion.
+     */
+    this.split_simbol = split_simbol;
     this.Tags = split(Tags);
-    for (int i = 1; i < this.Tags.size(); i++) {
+    for (int i = 0; i < this.Tags.size(); i++) {
       this.ValuesOfTags.put(this.Tags.get(i), new ArrayList<String>());
     }
   }
 
-  public void setValue(String dataInput){
+  public Tablas (String Tags){
+    this.Tags = split(Tags);
+    for (int i = 0; i < this.Tags.size(); i++) {
+      this.ValuesOfTags.put(this.Tags.get(i), new ArrayList<String>());
+    }
+  }
+
+  public void setValue(String dataInput, Boolean name){
     List<String> data = split(dataInput);
-    this.Name.add(data.remove(0));
+    int const_value = 0; // Si Existen nombres en fila leida vera saltarse la primera etiqueta 
+    if (!name){
+      this.Name.add(this.num_element.toString());
+    }else {
+      this.Name.add(data.remove(0));
+      const_value = 1;
+    }
+    this.num_element += 1;
     this.Tabla.add(data);
     for (int i = 0; i < data.size(); i++) {
-      List<String> listValueTag = this.ValuesOfTags.get(this.Tags.get(i+1));
+      List<String> listValueTag = this.ValuesOfTags.get(this.Tags.get(i+const_value));
       if(!listValueTag.contains(data.get(i))) listValueTag.add(data.get(i));
-      this.ValuesOfTags.put(this.Tags.get(i+1), listValueTag);
+      this.ValuesOfTags.put(this.Tags.get(i+const_value), listValueTag);
     }
   }
 
@@ -126,8 +150,8 @@ public class Tablas {
 
 
   private List<String> split(String dataInput) {
-    dataInput = dataInput.replaceAll(":", "").replaceAll(";;+", ";");
-    String[] parts = dataInput.split(";");
+    dataInput = dataInput.replaceAll(":", "").replaceAll(";;+", this.split_simbol);
+    String[] parts = dataInput.split(this.split_simbol);
     List<String> listPart = new ArrayList<>(Arrays.asList(parts));
     return listPart;
   }
