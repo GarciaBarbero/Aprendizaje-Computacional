@@ -1,0 +1,15 @@
+PA,AS,IC,AA,OA,AF
+a,a,a,n,n,s
+a,a,a,s,n,s
+b,a,b,n,n,s
+m,a,a,n,s,n
+m,b,a,s,s,n
+b,b,a,s,s,s
+a,b,a,s,n,s
+a,b,b,n,s,s
+a,a,b,s,s,n
+b,b,a,s,s,s
+m,b,b,s,s,s
+a,b,a,s,s,n
+b,a,a,s,s,s
+b,a,b,n,n,s
