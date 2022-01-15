@@ -35,7 +35,7 @@ class Tablas:
 
             numValueOfTagClas[indexClassVal] += 1
 
-        return (numValueOfTagClas, numValueByTags)
+        return numValueOfTagClas, numValueByTags
 
     def best(self):
         """
@@ -66,7 +66,8 @@ class Tablas:
             ganacia.update({key: aux_ganacia})
             if maxima_ganancia[1] < aux_ganacia:
                 maxima_ganancia = (key, aux_ganacia)
-
+        self.ganancias = ganacia
+        self.entropy = entropia
         return False, maxima_ganancia[0]
 
     def evaluar(self, tag=None, value=None):
@@ -74,8 +75,18 @@ class Tablas:
         if len(self.Value_Class_tag) < 2:
             return self.Value_Class_tag[0]
         index = self.Tags.index(tag)
-        count = len(list(filter(lambda x: x[index] == value, self.Table)))
-        return (count/len(self.Table))*100
+        # count = len(list(filter(lambda x: x[index] == value, self.Table)))
+        self._num_class_value, self._num_values_tag = self.count_values()
+        count = self._num_values_tag.get(tag).setdefauld({value: [0]*len(self.Value_Class_tag)})
+        final_count = []
+
+        for index, val in enumerate(count):
+            aux = (self.Value_Class_tag[index], (val/len(self.Table))*100)
+            final_count.insert(0, aux)
+
+        final_count = sorted(final_count, key=lambda tup: tup[1])
+
+        return final_count
 
     def removeTag(self, tag):
         index = self.Tags.index(tag)

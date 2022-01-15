@@ -9,6 +9,7 @@ class ID3:
     Tag: str
     hijos: {}
     IsFinal = False
+    Separador = ','
 
     def __init__(self, tabla=None):
         self.Tabla = tabla
@@ -24,7 +25,7 @@ class ID3:
 
 
 
-    def evaluar(self, value=None, dir=None):
+    def Pediction(self, value=None, dir=None):
         if not dir is None:
             name , data, num_row = self._separar(dir, self.Separador)
         elif not value is None:
@@ -87,9 +88,27 @@ class ID3:
 
         return name, data, num_row
 
-    def __str__(self):
-        pass
 
+    def
+
+    def drawDecisionTree(self, deep=0):
+        str_ = ""
+        if not self.IsFinal:
+            str_ += self.Tag
+            aux_str = []
+            for key in list(self.hijos.keys()):
+                str_+="\n "+ ("\t"*deep) +"-> " + key + ":" +self.hijos.get(key).print(deep+1)
+        else:
+            if not self.Tag is None:
+                str_ += self.Tag
+                str_ += ":"
+
+                values = self.Tabla.get_values_of_tag(self.Tag)
+                for val in values:
+                    str_+="{ " + val + ":" + self.Tabla.evaluar(self.Tag, val) + " }"
+            else:
+                str_ += "{ " + self.Tabla.evaluar() + " }"
+        return str_
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
@@ -105,7 +124,10 @@ if __name__ == '__main__':
 
     tree = ID3()
     tree.learnDT("/home/chona/Documentos/Uma/Robotica/Practicas/ID3Tree/test.txt")
-    print(tree.evaluar(value=(["PA","AS","IC","AA","OA"] , ["a","a","a","n","n"])))
+    # tree.learnDT("/home/chona/Documentos/Uma/Robotica/Practicas/ID3Tree/test2_dual.txt")
+    print(tree.drawDecisionTree())
+    # print(tree.evaluar(value=(["PArt","ASan","ICol","AAnt","Otros"] , ["alta","alto","alto","no","no"])))
+    # print(tree.evaluar(value=(["PA","AS","IC","AA","OA"] , ["a","a","a","n","n"])))
 
     # print(tree.updata())
     # print(tree.erencia)
