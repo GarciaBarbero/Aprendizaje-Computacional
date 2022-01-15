@@ -58,11 +58,30 @@ class ID3:
             value = table[name.index(self.Tag)]
             value = self.hijos.get(value)._eval(table, name)
 
+        if value is list:
+            value = value[0][0]
         return value
 
 
+    def acuracity(self, dir):
+        nama, data, _ = self._separar(dir, self.Separador)
+        nama.pop(-1)
+
+        acuracit = [0,0]
+        for row in data:
+            value_clas = row.pop(-1)
+            value_pedict = self._eval(row,nama)
+            if value_pedict == value_clas:
+                acuracit[1] +=1
+            else:
+                acuracit[0] += 1
+        suma = sum(acuracit)
+        acuracit[0] = ("Fallos",acuracit[0]/suma)
+        acuracit[1] = ("Aciertos",acuracit[1] / suma)
 
 
+
+        return acuracit
 
     def next(self):
         self.IsFinal, self.Tag = self.Tabla.best()
@@ -89,15 +108,13 @@ class ID3:
         return name, data, num_row
 
 
-    def
-
     def drawDecisionTree(self, deep=0):
         str_ = ""
         if not self.IsFinal:
             str_ += self.Tag
             aux_str = []
             for key in list(self.hijos.keys()):
-                str_+="\n "+ ("\t"*deep) +"-> " + key + ":" +self.hijos.get(key).print(deep+1)
+                str_+="\n "+ ("\t"*deep) + "├" +"─> " + key + ":" +self.hijos.get(key).drawDecisionTree(deep+1)
         else:
             if not self.Tag is None:
                 str_ += self.Tag
@@ -112,22 +129,8 @@ class ID3:
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    # f = open("/home/chona/Documentos/Uma/Robotica/Practicas/ID3Tree/test.txt", "r")
-    # data_aux = f.read().split("\n")
-    # name = data_aux.pop(0).split(SEPARADOR)
-    # data = []
-    # for row in data_aux:
-    #     data.append(row.split(SEPARADOR))
-    #
-    # tree = Tablas(name, data)
-    # print(tree.best())
-
     tree = ID3()
-    tree.learnDT("/home/chona/Documentos/Uma/Robotica/Practicas/ID3Tree/test.txt")
-    # tree.learnDT("/home/chona/Documentos/Uma/Robotica/Practicas/ID3Tree/test2_dual.txt")
+    tree.learnDT("./test2_dual.txt")
     print(tree.drawDecisionTree())
-    # print(tree.evaluar(value=(["PArt","ASan","ICol","AAnt","Otros"] , ["alta","alto","alto","no","no"])))
-    # print(tree.evaluar(value=(["PA","AS","IC","AA","OA"] , ["a","a","a","n","n"])))
+    print(tree.acuracity("./prediccionesTest2.txt"))
 
-    # print(tree.updata())
-    # print(tree.erencia)
